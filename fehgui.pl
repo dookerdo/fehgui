@@ -115,8 +115,11 @@ sub set_wall{
 
 ### OPEN CHOOSEDIR ###
 sub set_dir{
-	$directory_walls = $mw->chooseDirectory();
-	&set_list; #refresh listbox
+	my $directory_walls_tmp = $mw->chooseDirectory(-initialdir=>"$directory_walls");
+	if($directory_walls_tmp){ # Make sure they didn't cancel
+		$directory_walls = $directory_walls_tmp;
+		&set_list; #refresh listbox
+	}
 }
 
 ### POPULATE LISTBOX ###
