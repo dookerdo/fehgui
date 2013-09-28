@@ -11,7 +11,7 @@ if(!$x){
 	$directory_walls = $x;
 }
 
-if(!$x && @ARGV){print("\nHELP FILE\n");exit;} #ADD A HELP FILE LATER
+if(!$x && !$r && @ARGV){print("\nHELP FILE\n");exit;} #ADD A HELP FILE LATER
 
 
 ###############
@@ -74,7 +74,12 @@ $lbfiles->Subwidget("listbox")->selectionSet(0);
 
 ### MAIN LOOP ###
 &set_list;
+if($r){
+	&random_wall;
+	exit;
+}
 MainLoop;
+
 
 
 ############
