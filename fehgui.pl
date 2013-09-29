@@ -5,6 +5,9 @@ use feature qw/switch/;
 #############################
 ### VARIABLES / PREPATORY ###
 my $directory_walls;
+
+# The following needs to be redone eventually. I would perfer to use
+# traditional unix-style switches instead of the perl -s hack-y way.
 if(!$x){
 	$directory_walls = "/home/" . ($ENV{LOGNAME} || $ENV{USER}) . "/wallpaper";
 }else{
@@ -72,13 +75,26 @@ $bexit->pack(-side=>'right',-fill=>'both');
 $lbfiles->pack(-expand=>1,-fill=>'both');
 $lbfiles->Subwidget("listbox")->selectionSet(0);
 
+#################
 ### MAIN LOOP ###
 &set_list;
+
+# The following really needs to be moved elsewhere
+# I'd prefer the call to be at the top (were the
+# other switch statements are), but this is the
+# easiest solution for the time being - until
+# I can reorganize this growing hack.
+# The issue is random_wall requires set_list to 
+# have been called. So it must be after the gui
+# elements have been instantiated and defined.
 if($r){
 	&random_wall;
 	exit;
 }
+
 MainLoop;
+
+################
 
 
 
@@ -132,7 +148,8 @@ sub set_list{
 
 	$lbfiles->delete(0,$lbfiles->size());
 	foreach(<$directory_walls/*>){
-		$_ =! m/([^\/]+)$/;
+		$_ =! m/(([^\/]+).(jpg|gif|jpeg|png))$/;
+		# Selects only suitable filenames.
 		$_ = $1;
 		$lbfiles->insert("end","$_");
 	}
